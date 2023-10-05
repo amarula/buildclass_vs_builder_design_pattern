@@ -1,4 +1,3 @@
-import __init__
 from dyndesign import buildclass, decoratewith, dynconfig, ClassConfig, LocalClassConfig
 import argparse
 
