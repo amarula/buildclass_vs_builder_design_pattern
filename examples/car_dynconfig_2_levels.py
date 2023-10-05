@@ -71,11 +71,6 @@ class Components:
 
 # Mixin class for luxury option
 class LuxuryMixin:
-    def add_luxury_components(self, func, *args):
-        func(self, *args)
-        self.components.add(Sunroof())
-        self.components.add(Camera())
-
     def echo_luxury(self, func):
         func(self)
         print("(Luxury Edition)")
@@ -83,6 +78,11 @@ class LuxuryMixin:
 
 # DynConfig Configurator class
 class CarConfigurator:
+    Luxury = (
+        ClassConfig(inherit_from=LuxuryMixin),
+        ClassConfig(component_class=Camera),
+        ClassConfig(component_class=Sunroof)
+    )
     Engine = {
         "V6": ClassConfig(component_class=EngineV6),
         "V8": ClassConfig(component_class=EngineV8),
@@ -97,8 +97,6 @@ class CarConfigurator:
     Camera = ClassConfig(component_class=Camera)
     Sunroof = ClassConfig(component_class=Sunroof)
 
-    Luxury = ClassConfig(inherit_from=LuxuryMixin)
-
     DYNDESIGN_LOCAL_CONFIG = LocalClassConfig(
         component_attr="components",
         init_args_from_option=True,
@@ -108,7 +106,6 @@ class CarConfigurator:
 # Base car class
 @dynconfig(CarConfigurator)
 class Car:
-    @decoratewith("add_luxury_components")
     def __init__(self, make, model):
         self.make = make
         self.model = model
